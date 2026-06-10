@@ -40,7 +40,17 @@ class MedicationListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('${medication.nombre} ${medication.dosis}', style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    '${medication.nombre} ${medication.dosis}',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  if (medication.descripcion != null && medication.descripcion!.isNotEmpty)
+                    Text(
+                      medication.descripcion!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.outline),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   Text(timeFormatted, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.outline)),
                 ],
               ),

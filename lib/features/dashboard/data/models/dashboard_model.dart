@@ -2,6 +2,7 @@ class MedicationModel {
   final String id;
   final String nombre;
   final String dosis;
+  final String? descripcion;
   final int frecuenciaHoras;
   final DateTime nextTakeAt;
   final String? status;
@@ -11,6 +12,7 @@ class MedicationModel {
     required this.id,
     required this.nombre,
     required this.dosis,
+    this.descripcion,
     required this.frecuenciaHoras,
     required this.nextTakeAt,
     this.status,
@@ -22,10 +24,10 @@ class MedicationModel {
       id: json['id'] ?? '',
       nombre: json['nombre'] ?? '',
       dosis: json['dosis'] ?? '',
+      descripcion: json['descripcion'],
       frecuenciaHoras: json['frecuencia_horas'] ?? 0,
       nextTakeAt: DateTime.parse(json['next_take_at']).toLocal(),
       status: json['status'],
-      // Ya no hay parche aquí. Llega limpio gracias a Dio.
       imageUrl: json['image_url'], 
     );
   }

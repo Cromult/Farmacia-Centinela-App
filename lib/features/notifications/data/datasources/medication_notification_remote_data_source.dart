@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/medication_take_dto.dart';
+import '../models/medication_timeline_model.dart';
 
 class MedicationNotificationRemoteDataSource {
   final ApiClient apiClient;
@@ -51,6 +52,16 @@ class MedicationNotificationRemoteDataSource {
       return List<Map<String, dynamic>>.from(response.data);
     } on DioException catch (e) {
       throw Exception('Error al obtener el historial: ${e.response?.data['message'] ?? e.message}');
+    }
+  }
+
+  Future<List<MedicationTimelineModel>> getTimelineHistory() async {
+    try {
+      final response = await apiClient.dio.get('/medicantion-notifications/history/me');
+      final List<dynamic> data = response.data;
+      return data.map((json) => MedicationTimelineModel.fromJson(json)).toList();
+    } on DioException catch (e) {
+      throw Exception('Error al obtener la línea de tiempo: ${e.response?.data['message'] ?? e.message}');
     }
   }
 }

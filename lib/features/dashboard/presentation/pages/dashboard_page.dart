@@ -5,11 +5,12 @@ import '../providers/dashboard_provider.dart';
 import '../widgets/next_medication_card.dart';
 import '../widgets/medication_list_item.dart';
 import '../../../../shared/widgets/custom_bottom_nav.dart';
-import '../../../catalog/presentation/pages/catalog_page.dart'; // <-- Agrega esta línea
+import '../../../catalog/presentation/pages/catalog_page.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/pages/login_page.dart';
 import '../../../prescriptions/presentation/pages/register_prescription_page.dart';
 import '../../../prescriptions/presentation/pages/my_prescriptions_page.dart';
+import '../../../notifications/presentation/pages/medication_timeline_page.dart';
 
 import 'visual_validation_page.dart';
 
@@ -161,8 +162,8 @@ class DashboardPage extends ConsumerWidget {
                   
                   const SizedBox(height: 40),
 
-                  // Resumen del día (Resto de medicinas)
-                  Text('Resumen de hoy', style: Theme.of(context).textTheme.headlineMedium),
+                  // Sección: Medicinas a tomar hoy
+                  Text('Medicinas a tomar hoy', style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 16),
                   
                   if (dashboard.medications.isEmpty && dashboard.nextMedication == null)
@@ -192,19 +193,38 @@ class DashboardPage extends ConsumerWidget {
         },
       ),
 
-      // FAB para agregar receta rápidamente
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const RegisterPrescriptionPage(),
-            ),
-          );
-        },
-        label: const Text('Nueva Receta', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        icon: const Icon(Icons.add_circle_outline, size: 28),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+      // FABs para acciones rápidas
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton.extended(
+            heroTag: 'btn_timeline',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const MedicationTimelinePage()),
+              );
+            },
+            label: const Text('Ver Historial', style: TextStyle(fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.history),
+            backgroundColor: Colors.white,
+            foregroundColor: Theme.of(context).colorScheme.primary,
+          ),
+          const SizedBox(height: 16),
+          FloatingActionButton.extended(
+            heroTag: 'btn_new_recipe',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const RegisterPrescriptionPage(),
+                ),
+              );
+            },
+            label: const Text('Nueva Receta', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            icon: const Icon(Icons.add_circle_outline, size: 28),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.white,
+          ),
+        ],
       ),
       
       // Bottom Navigation Bar
@@ -226,9 +246,6 @@ class DashboardPage extends ConsumerWidget {
                 builder: (_) => const MyPrescriptionsPage(),
               ),
             );
-          } else if (index == 3) {
-            // Futura navegación a Perfil
-            // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Módulo de Perfil en construcción')));
           }
         },
       ),

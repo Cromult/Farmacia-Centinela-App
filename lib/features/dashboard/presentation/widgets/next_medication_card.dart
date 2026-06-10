@@ -107,6 +107,13 @@ class NextMedicationCard extends StatelessWidget {
                   children: [
                     Text(timeFormatted, style: theme.textTheme.displayLarge),
                     Text('${medication.nombre} ${medication.dosis}', style: theme.textTheme.headlineMedium),
+                    if (medication.descripcion != null && medication.descripcion!.isNotEmpty)
+                      Text(
+                        medication.descripcion!,
+                        style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.outline),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
